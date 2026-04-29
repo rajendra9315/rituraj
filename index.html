@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> 𝐓𝐑𝐀𝐃𝐄 𝐖𝐈𝐓𝐇 𝐑𝐈𝐓𝐔𝐑𝐀𝐉 | COLOR PREDICTION MASTER</title>
+
+  
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --gold: #f5c842;
+            --gold2: #ffd700;
+            --gold-dim: rgba(245,200,66,0.18);
+            --red: #ff3b3b;
+            --violet: #c040fb;
+            --bg: #03060f;
+            --card: rgba(10,15,30,0.94);
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #particles-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .aurora {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .aurora::before {
+            content: '';
+            position: absolute;
+            width: 700px; height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(192,64,251,0.12) 0%, transparent 70%);
+            top: -200px; left: -200px;
+            animation: auroraDrift1 10s ease-in-out infinite alternate;
+        }
+        .aurora::after {
+            content: '';
+            position: absolute;
+            width: 600px; height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245,200,66,0.09) 0%, transparent 70%);
+            bottom: -150px; right: -150px;
+            animation: auroraDrift2 12s ease-in-out infinite alternate;
+        }
+        @keyframes auroraDrift1 {
+            from { transform: translate(0,0) scale(1); }
+            to   { transform: translate(80px,60px) scale(1.15); }
+        }
+        @keyframes auroraDrift2 {
+            from { transform: translate(0,0) scale(1); }
+            to   { transform: translate(-70px,-50px) scale(1.1); }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(245,200,66,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(245,200,66,0.035) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 430px;
+            background: var(--card);
+            border: 1px solid var(--gold-dim);
+            min-height: 100vh;
+            padding: 0 0 60px;
+            backdrop-filter: blur(18px);
+            box-shadow: 0 0 80px rgba(245,200,66,0.06), 0 0 200px rgba(192,64,251,0.06);
+        }
+
+        .top-banner {
+            width: 100%;
+            padding: 10px 0 8px;
+            background: linear-gradient(90deg, rgba(192,64,251,0.15), rgba(245,200,66,0.12), rgba(255,59,59,0.12), rgba(192,64,251,0.15));
+            background-size: 300% 100%;
+            animation: bannerFlow 6s linear infinite;
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--gold);
+            font-weight: 700;
+            border-bottom: 1px solid var(--gold-dim);
+        }
+        @keyframes bannerFlow {
+            0%   { background-position: 0% 0%; }
+            100% { background-position: 300% 0%; }
+        }
+
+        .hero { padding: 36px 20px 0; text-align: center; }
+
+        .avatar-ring {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+        .avatar-ring::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            background: conic-gradient(var(--gold2), var(--violet), var(--red), var(--gold2));
+            animation: spinRing 3s linear infinite;
+            z-index: 0;
+        }
+        @keyframes spinRing {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        .avatar-ring img {
+            position: relative;
+            z-index: 1;
+            width: 110px; height: 110px;
+            border-radius: 50%;
+            border: 4px solid var(--bg);
+            object-fit: cover;
+            display: block;
+        }
+        .king-badge {
+            position: absolute;
+            bottom: -8px; left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, #f5c842, #ffd700, #f5c842);
+            color: #000;
+            font-size: 9px;
+            font-weight: 900;
+            padding: 4px 14px;
+            border-radius: 20px;
+            white-space: nowrap;
+            letter-spacing: 1.5px;
+            z-index: 2;
+            box-shadow: 0 2px 14px rgba(245,200,66,0.55);
+        }
+
+        .brand-name {
+            font-family: 'Cinzel', serif;
+            font-size: 2.6rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #bf953f, #fcf6ba, #f5c842, #ffd700, #aa771c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200%;
+            animation: goldShimmer 3s linear infinite;
+            margin-top: 20px;
+            line-height: 1;
+            letter-spacing: 2px;
+        }
+        @keyframes goldShimmer {
+            0%   { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        .brand-sub {
+            font-size: 10px;
+            letter-spacing: 5px;
+            color: rgba(255,255,255,0.28);
+            margin-top: 6px;
+            text-transform: uppercase;
+        }
+
+        /* ===== FEATURE CARDS ===== */
+        .feature-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin: 28px 16px 0;
+        }
+        .fcard {
+            border-radius: 16px;
+            padding: 18px 10px 16px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.06);
+            position: relative;
+            overflow: hidden;
+            animation: fcardFloat 4s ease-in-out infinite;
+        }
+        .fcard:nth-child(2) { animation-delay: 1.2s; }
+        .fcard:nth-child(3) { animation-delay: 2.4s; }
+        @keyframes fcardFloat {
+            0%,100% { transform: translateY(0); }
+            50%      { transform: translateY(-5px); }
+        }
+        .fcard::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.05), transparent 70%);
+        }
+        .fcard-gold   { background: linear-gradient(160deg, rgba(245,200,66,0.1), rgba(245,200,66,0.03)); border-color: rgba(245,200,66,0.22); }
+        .fcard-violet { background: linear-gradient(160deg, rgba(192,64,251,0.12), rgba(192,64,251,0.03)); border-color: rgba(192,64,251,0.22); }
+        .fcard-red    { background: linear-gradient(160deg, rgba(255,59,59,0.12), rgba(255,59,59,0.03)); border-color: rgba(255,59,59,0.22); }
+
+        .fcard-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+        .fcard-val  {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            font-weight: 900;
+            display: block;
+            line-height: 1.2;
+        }
+        .fcard-gold   .fcard-val { color: var(--gold);  text-shadow: 0 0 10px rgba(245,200,66,0.5); }
+        .fcard-violet .fcard-val { color: #d580ff;      text-shadow: 0 0 10px rgba(192,64,251,0.5); }
+        .fcard-red    .fcard-val { color: #ff7070;      text-shadow: 0 0 10px rgba(255,59,59,0.5); }
+        .fcard-lbl {
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.3);
+            margin-top: 4px;
+            display: block;
+            text-transform: uppercase;
+        }
+
+        /* ===== STATS ===== */
+        .stats-card {
+            margin: 20px 16px 0;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(245,200,66,0.06), rgba(192,64,251,0.05));
+            border: 1px solid rgba(245,200,66,0.14);
+            padding: 22px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: -30px; right: -30px;
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245,200,66,0.07), transparent);
+        }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .stat-box   { text-align: center; }
+        .stat-val   { font-family: 'Cinzel', serif; font-size: 1.8rem; font-weight: 900; }
+        .stat-val.gold   { color: var(--gold); text-shadow: 0 0 12px rgba(245,200,66,0.5); }
+        .stat-val.violet { color: #d580ff;     text-shadow: 0 0 12px rgba(192,64,251,0.4); }
+        .stat-lbl { font-size: 9px; letter-spacing: 2px; color: rgba(255,255,255,0.28); margin-top: 3px; }
+
+        .verified-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .vbadge {
+            background: linear-gradient(90deg, rgba(245,200,66,0.15), rgba(245,200,66,0.07));
+            border: 1px solid rgba(245,200,66,0.28);
+            color: var(--gold);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+        }
+        .vtext { font-size: 11px; color: rgba(255,255,255,0.3); }
+
+        /* ===== STREAK ===== */
+        .streak-section { margin: 24px 16px 0; text-align: center; }
+        .streak-label { font-size: 10px; letter-spacing: 3px; color: rgba(255,255,255,0.28); margin-bottom: 12px; }
+        .streak-dots { display: flex; justify-content: center; gap: 10px; }
+        .sdot {
+            width: 46px; height: 46px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(245,200,66,0.2), rgba(192,64,251,0.18));
+            border: 1.5px solid rgba(245,200,66,0.3);
+            box-shadow: 0 0 16px rgba(245,200,66,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            animation: popIn 0.5s ease both;
+        }
+        .sdot:nth-child(1){animation-delay:0.0s}
+        .sdot:nth-child(2){animation-delay:0.12s}
+        .sdot:nth-child(3){animation-delay:0.24s}
+        .sdot:nth-child(4){animation-delay:0.36s}
+        .sdot:nth-child(5){animation-delay:0.48s}
+        @keyframes popIn {
+            from { transform: scale(0); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+
+        /* ===== JOIN BUTTON ===== */
+        .join-section { margin: 28px 16px 0; }
+        .join-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 20px;
+            border-radius: 60px;
+            text-decoration: none;
+            background: linear-gradient(90deg, #c040fb, #7b00d4, #c040fb);
+            background-size: 200%;
+            animation: btnFlow 3s linear infinite, btnPulse 2s ease-in-out infinite;
+            color: #fff;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(192,64,251,0.45), 0 2px 10px rgba(192,64,251,0.2);
+        }
+        .join-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%);
+            background-size: 200%;
+            animation: shine 2.5s linear infinite;
+        }
+        @keyframes btnFlow {
+            0%   { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        @keyframes btnPulse {
+            0%,100% { transform: scale(1);     box-shadow: 0 10px 40px rgba(192,64,251,0.45); }
+            50%      { transform: scale(1.025); box-shadow: 0 14px 50px rgba(192,64,251,0.65); }
+        }
+        @keyframes shine {
+            0%   { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .profit-tag {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 10px rgba(245,200,66,0.45);
+            animation: tagPulse 2s ease-in-out infinite;
+        }
+        @keyframes tagPulse {
+            0%,100% { opacity: 1; }
+            50%      { opacity: 0.65; }
+        }
+
+        /* ===== TICKER ===== */
+        .ticker-card {
+            margin: 28px 16px 0;
+            border-radius: 16px;
+            background: rgba(0,0,0,0.45);
+            border: 1px solid rgba(192,64,251,0.15);
+            padding: 16px;
+        }
+        .ticker-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .live-dot { position: relative; width: 10px; height: 10px; }
+        .live-dot span:first-child {
+            position: absolute; inset: 0; border-radius: 50%;
+            background: var(--gold); opacity: 0.6;
+            animation: ping 1.2s ease-out infinite;
+        }
+        .live-dot span:last-child { position: absolute; inset: 2px; border-radius: 50%; background: var(--gold); }
+        @keyframes ping { 75%,100% { transform: scale(2); opacity: 0; } }
+        .live-label { font-size: 10px; letter-spacing: 2px; color: var(--gold); font-weight: 700; }
+        .ticker-list { display: flex; flex-direction: column; gap: 8px; }
+        .tick-item {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .tick-amount { color: var(--gold); font-weight: 700; }
+
+        .sep {
+            height: 1px;
+            margin: 28px 16px 0;
+            background: linear-gradient(90deg, transparent, rgba(245,200,66,0.18), transparent);
+        }
+
+        .footer { margin-top: 40px; text-align: center; padding: 0 20px; }
+        .footer-admin { font-size: 12px; color: rgba(255,255,255,0.28); margin-bottom: 6px; }
+        .footer-admin a { color: #c084fc; font-weight: 700; text-decoration: none; }
+        .footer-copy { font-size: 9px; color: rgba(255,255,255,0.1); letter-spacing: 3px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+<div class="aurora"></div>
+<div class="grid-overlay"></div>
+
+<div class="main-container">
+
+    <div class="top-banner">⚡ LIVE PREDICTIONS ACTIVE · INDIA'S #1 COLOR MASTER ⚡</div>
+
+    <div class="hero">
+        <div class="avatar-ring">
+            <img src="rituraj.jpg" alt="𝐓𝐑𝐀𝐃𝐄 𝐖𝐈𝐓𝐇 𝐑𝐈𝐓𝐔𝐑𝐀𝐉 " />
+            <div class="king-badge">👑 KING OF PREDICTION</div>
+        </div>
+        <h1 class="brand-name">𝐓𝐄𝐀𝐌 𝐑𝐀𝐉𝐏𝐔𝐓 𝐒𝐔𝐑𝐄𝐒𝐇𝐎𝐓</h1>
+        <p class="brand-sub">Premium Color Analysis</p>
+    </div>
+
+    <!-- Feature Cards (no color balls) -->
+    <div class="feature-cards">
+        <div class="fcard fcard-gold">
+            <span class="fcard-icon">🎯</span>
+            <span class="fcard-val">3-4 Level</span>
+            <span class="fcard-lbl">Strategy</span>
+        </div>
+        <div class="fcard fcard-violet">
+            <span class="fcard-icon">⚡</span>
+            <span class="fcard-val">99.9%</span>
+            <span class="fcard-lbl">Accuracy</span>
+        </div>
+        <div class="fcard fcard-red">
+            <span class="fcard-icon">👥</span>
+            <span class="fcard-val">20K+</span>
+            <span class="fcard-lbl">Members</span>
+        </div>
+    </div>
+
+    <!-- Telegram Button above stats box — same as bottom join button -->
+    <div class="join-section">
+        <a href="https://t.me/+ZXOmos2vuFc3ZGNl" target="_blank" class="join-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+            JOIN FREE CHANNEL
+        </a>
+    </div>
+
+    <div class="stats-card">
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-val gold">₹50,000</div>
+                <div class="stat-lbl">Daily Max Profit</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-val violet">Daily</div>
+                <div class="stat-lbl">Free Predictions</div>
+            </div>
+        </div>
+        <div class="verified-row">
+            <div class="vbadge">OFFICIAL ANALYST</div>
+            <div class="vtext">Trusted by 20,000+ Players</div>
+        </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="streak-section">
+        <p class="streak-label">LAST 5 SESSIONS</p>
+        <div class="streak-dots">
+            <div class="sdot">🏆</div>
+            <div class="sdot">🏆</div>
+            <div class="sdot">🏆</div>
+            <div class="sdot">🏆</div>
+            <div class="sdot">🏆</div>
+        </div>
+    </div>
+
+    <div class="join-section">
+        <a href="https://t.me/+ZXOmos2vuFc3ZGNl" target="_blank" class="join-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+            JOIN FREE CHANNEL
+        </a>
+        <p class="profit-tag">💰 Daily ₹5,000 – ₹50,000 Profit Guarantee!</p>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="ticker-card">
+        <div class="ticker-header">
+            <div class="live-dot"><span></span><span></span></div>
+            <span class="live-label">LIVE WITHDRAWALS</span>
+        </div>
+        <div class="ticker-list" id="winning-ticker">
+            <div class="tick-item">User 9188***23 withdrew <span class="tick-amount">₹14,200</span> 💸</div>
+            <div class="tick-item">User 9170***11 withdrew <span class="tick-amount">₹2,500</span> 💸</div>
+            <div class="tick-item">User 9155***77 withdrew <span class="tick-amount">₹8,900</span> 💸</div>
+        </div>
+    </div>
+
+    
+
+</div>
+
+<script>
+const canvas = document.getElementById('particles-canvas');
+const ctx    = canvas.getContext('2d');
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+// Gold, Violet, Red only — NO green
+const COLORS = ['#f5c842','#ffd700','#c040fb','#9900ff','#ff3b3b','#ffffff'];
+const particles = [];
+for (let i = 0; i < 90; i++) {
+    particles.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: Math.random() * 1.8 + 0.3,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        alpha: Math.random() * 0.5 + 0.1,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        twinkle: Math.random() * Math.PI * 2,
+    });
+}
+
+const stars = [];
+function spawnStar() {
+    stars.push({
+        x: Math.random() * canvas.width, y: 0,
+        len: Math.random() * 80 + 40,
+        speed: Math.random() * 6 + 4,
+        alpha: 1,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    });
+}
+setInterval(spawnStar, 2200);
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+        p.twinkle += 0.03;
+        const a = p.alpha * (0.6 + 0.4 * Math.sin(p.twinkle));
+        ctx.save();
+        ctx.globalAlpha = a;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 6;
+        ctx.fill();
+        ctx.restore();
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+    });
+    for (let i = stars.length - 1; i >= 0; i--) {
+        const s = stars[i];
+        ctx.save();
+        ctx.globalAlpha = s.alpha;
+        const g = ctx.createLinearGradient(s.x, s.y, s.x + s.len * 0.6, s.y + s.len);
+        g.addColorStop(0, s.color); g.addColorStop(1, 'transparent');
+        ctx.strokeStyle = g;
+        ctx.lineWidth = 1.5;
+        ctx.shadowColor = s.color;
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x + s.len * 0.6, s.y + s.len);
+        ctx.stroke();
+        ctx.restore();
+        s.x += s.speed * 0.6; s.y += s.speed; s.alpha -= 0.018;
+        if (s.alpha <= 0) stars.splice(i, 1);
+    }
+    requestAnimationFrame(draw);
+}
+draw();
+
+// Ticker — no color name
+const ticker  = document.getElementById('winning-ticker');
+const users   = ['9199***34','9182***88','9174***12','9160***00','9188***55','9145***21','9133***67'];
+const amounts = ['₹5,000','₹1,200','₹22,000','₹8,400','₹15,000','₹3,800','₹11,500'];
+setInterval(() => {
+    const user   = users[Math.floor(Math.random() * users.length)];
+    const amount = amounts[Math.floor(Math.random() * amounts.length)];
+    const el = document.createElement('div');
+    el.className = 'tick-item';
+    el.style.opacity = '0';
+    el.style.transition = 'opacity 0.5s';
+    el.innerHTML = `User ${user} withdrew <span class="tick-amount">${amount}</span> 💸`;
+    ticker.prepend(el);
+    requestAnimationFrame(() => { el.style.opacity = '1'; });
+    if (ticker.children.length > 4) ticker.removeChild(ticker.lastChild);
+}, 3000);
+
+let isAdmin = false;
+document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
+        const p = prompt("Admin Password");
+        if (p === "raj@2026") { isAdmin = true; alert("Admin Mode Enabled"); }
+    }
+    if (isAdmin) return;
+    if (e.key === "F12" || (e.ctrlKey && e.key.toLowerCase() === "u")) e.preventDefault();
+});
+document.addEventListener('contextmenu', e => { if (!isAdmin) e.preventDefault(); });
+</script>
+
+</body>
+</html>
